@@ -1,9 +1,13 @@
 from __future__ import annotations
 
+import sys
 from pathlib import Path
 from typing import Optional
 
-from src.memory.database import connect_database, initialize_database
+if __package__ is None or __package__ == "":
+    sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+
+from src.memory.database import initialize_database
 from src.memory.knowledge import KnowledgeManager
 
 
@@ -16,12 +20,9 @@ class NovaCli:
         self.manager = KnowledgeManager(self.connection)
 
     def run(self) -> None:
-        print("NOVA v0.1")
-        print("Artificial Memory System")
-        print()
-        # O loop principal mantém a interação simples e direta, sem depender de frameworks externos.
+        self._print_banner()
         while True:
-            print("Digite:")
+            print("\nDigite:")
             print("1 - Ensinar conhecimento")
             print("2 - Consultar conhecimento")
             print("3 - Mostrar memória")
@@ -40,6 +41,13 @@ class NovaCli:
             else:
                 print("Opção inválida. Tente novamente.")
 
+    def _print_banner(self) -> None:
+        print("=" * 40)
+        print("NOVA v0.1")
+        print("Artificial Memory System")
+        print("Memória local e conhecimento persistente")
+        print("=" * 40)
+
     def _teach_knowledge(self) -> None:
         try:
             name = input("Nome do conceito: ").strip()
@@ -56,6 +64,7 @@ class NovaCli:
                 confidence=confidence,
             )
             print(f"Conhecimento ensinado com sucesso. ID: {concept_id}")
+            print("A informação foi salva na memória da NOVA.")
         except ValueError as error:
             print(f"Erro de validação: {error}")
         except KeyboardInterrupt:
@@ -93,6 +102,7 @@ class NovaCli:
                 print("A memória da NOVA está vazia.")
                 return
             print("Memória da NOVA:")
+            print("-" * 40)
             for concept in concepts:
                 print(f"[{concept['id']}] {concept['name']} | {concept['category']} | {concept['confidence']}")
         except Exception as error:  # pragma: no cover - proteção básica

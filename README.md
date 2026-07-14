@@ -1,6 +1,15 @@
 # N.O.V.A.-A.I.
 Uma inteligência artificial experimental focada em aprendizado, memória artificial, aquisição de conhecimento e evolução cognitiva.
 
+## Visão geral
+A NOVA é um projeto experimental para estudar como um sistema pode aprender, armazenar e recuperar conhecimento de forma estruturada. Nesta versão, ela já possui:
+
+- memória persistente em SQLite
+- conceitos e relações entre conceitos
+- respostas contextuais simples
+- interface web visual com FastAPI
+- interface terminal de apoio
+
 ## Versão atual
 NOVA v0.1 — Artificial Memory System
 
@@ -14,23 +23,24 @@ Criar uma NOVA com memória artificial persistente, respostas baseadas em contex
 - Backend web com FastAPI em web/app.py.
 - Interface visual em HTML, CSS e JavaScript puro em web/templates e web/static.
 
-## Como executar a interface web
+## Como executar
+### Interface web
 Instale as dependências:
 ```bash
 python3 -m pip install --break-system-packages -r requirements.txt
 ```
 
-Depois inicie o servidor:
+Inicie o servidor:
 ```bash
 python3 -m uvicorn web.app:app --reload --host 0.0.0.0 --port 8000
 ```
 
-Depois abra o navegador em:
+Abra no navegador:
 ```text
 http://127.0.0.1:8000/
 ```
 
-## Como executar o terminal antigo
+### Interface terminal
 ```bash
 python3 src/main.py
 ```
@@ -41,20 +51,39 @@ python3 src/main.py
 python3 -m unittest discover -s tests -v
 ```
 
-### Fluxo manual no terminal
-1. Execute o programa.
-2. Escolha a opção 1 para ensinar um conceito.
-3. Escolha a opção 2 para consultar por palavra-chave.
-4. Escolha a opção 3 para visualizar os conceitos salvos.
-5. Escolha a opção 4 para ver relações entre conceitos.
-6. Escolha a opção 5 para criar uma nova relação.
+### Fluxo manual da interface web
+1. Acesse a página inicial.
+2. Pergunte algo como "O que é Python?".
+3. Ensine um novo conceito no formulário.
+4. Veja a memória atual sendo atualizada.
 
-### Exemplo rápido
+### Exemplo rápido de conhecimento
 - Nome: Python
 - Categoria: Programação
 - Descrição: Linguagem de programação de alto nível
 - Fonte: Manual Python
 - Confiança: 0.9
+
+## Estrutura do projeto
+```text
+src/
+  main.py
+  memory/
+    database.py
+    knowledge.py
+web/
+  app.py
+  templates/
+    index.html
+  static/
+    style.css
+    script.js
+tests/
+  test_memory.py
+  test_main_cli.py
+  test_reasoning.py
+  test_web_api.py
+```
 
 ## Próximo passo
 A próxima evolução da NOVA pode incluir inferência automática de relações, memória episódica e respostas ainda mais naturais, mantendo tudo local e sem dependência de APIs externas.

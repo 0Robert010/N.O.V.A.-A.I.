@@ -3,6 +3,8 @@ import sys
 import unittest
 from pathlib import Path
 
+from src.main import app
+
 
 class MainCliTests(unittest.TestCase):
     def test_main_cli_starts_with_exit_option(self) -> None:

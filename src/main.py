@@ -9,6 +9,9 @@ if __package__ is None or __package__ == "":
 
 from src.memory.database import initialize_database
 from src.memory.knowledge import KnowledgeManager
+from web.app import app as web_app
+
+app = web_app
 
 
 class NovaCli:

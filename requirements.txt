@@ -5,3 +5,5 @@ python-multipart
 httpx
 requests
 beautifulsoup4
+SQLAlchemy>=1.4
+psycopg2-binary

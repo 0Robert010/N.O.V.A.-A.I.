@@ -61,13 +61,21 @@ class LearnerService:
 
         confidence = 0.7
 
-        return self.learn_concept(
+        concept_id = self.learn_concept(
             name=title,
             category=category,
             description=description,
             source=url,
             confidence=confidence,
         )
+        # broadcast asynchronously if possible
+        try:
+            import asyncio
+            from src.events.broadcast import broadcast as _broadcast
+            asyncio.create_task(_broadcast(f"[WEB] Aprendido: {title} ({url})"))
+        except Exception:
+            pass
+        return concept_id
 
     def get_stats(self) -> Dict[str, Any]:
         concepts = self.manager.list_concepts()

@@ -89,3 +89,10 @@ class AutonomousLearner:
         entry = f"[{timestamp}]\n{message}\n"
         with self.log_path.open("a", encoding="utf-8") as handle:
             handle.write(entry + "\n")
+        # Try to broadcast to any connected websocket clients (non-blocking)
+        try:
+            import asyncio
+            from src.events.broadcast import broadcast as _broadcast
+            asyncio.create_task(_broadcast(f"[{timestamp}] {message}"))
+        except Exception:
+            pass

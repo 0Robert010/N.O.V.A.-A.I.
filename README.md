@@ -112,6 +112,24 @@ tests/
 python3 -m unittest discover -s tests -v
 ```
 
+## Deploy / Persistência no Vercel
+A plataforma Vercel possui filesystem efêmero — para persistência use um banco externo (Postgres).
+
+- Configure um banco Postgres (ex.: Supabase, Neon, ElephantSQL).
+- Defina a variável de ambiente `DATABASE_URL` com a URL de conexão (ex.: `postgres://user:pass@host:5432/dbname`).
+- Atualize `requirements.txt` (já inclui `SQLAlchemy` e `psycopg2-binary`).
+- Em Vercel, configure o comando de build/start como:
+
+```bash
+pip install -r requirements.txt
+uvicorn api.main:app --host 0.0.0.0 --port $PORT
+```
+
+Observações:
+- A aplicação detecta `DATABASE_URL` automaticamente e usará Postgres via SQLAlchemy.
+- Para experiência em tempo real, a API expõe um WebSocket em `/ws/diary` que a interface usa para receber atualizações do diário de aprendizado.
+- Não use a filesystem local para persistência em Vercel; use o banco externo.
+
 ## Fluxo de funcionamento
 1. A NOVA verifica arquivos .txt em knowledge_input/.
 2. O módulo de aprendizado extrai um nome, categoria e descrição simples.

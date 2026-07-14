@@ -9,6 +9,26 @@ const runLearningButton = document.getElementById('run-learning');
 const learnUrlButton = document.getElementById('learn-url');
 const urlInput = document.getElementById('url-input');
 
+// WebSocket for live diary
+let diarySocket;
+function initWebSocket() {
+  try {
+    const protocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
+    diarySocket = new WebSocket(`${protocol}://${window.location.host}/ws/diary`);
+    diarySocket.onmessage = (ev) => {
+      const line = document.createElement('div');
+      line.className = 'line';
+      line.textContent = ev.data;
+      if (activityLog) activityLog.appendChild(line);
+    };
+    diarySocket.onopen = () => console.log('Diary websocket open');
+    diarySocket.onclose = () => console.log('Diary websocket closed');
+  } catch (err) {
+    console.warn('WebSocket init failed', err);
+  }
+}
+initWebSocket();
+
 async function loadStats() {
   const response = await fetch('/stats');
   const data = await response.json();

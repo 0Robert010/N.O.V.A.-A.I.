@@ -2,9 +2,10 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, WebSocket, WebSocketDisconnect
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
+from src.events.broadcast import register as register_ws, unregister as unregister_ws
 
 from api.services.learner import LearnerService
 from src.memory.database import initialize_database
@@ -35,3 +36,21 @@ async def root(request: Request) -> HTMLResponse:
 @app.get("/health")
 async def health() -> dict:
     return {"status": "ok"}
+
+
+@app.websocket("/ws/diary")
+async def websocket_diary(ws: WebSocket):
+    await ws.accept()
+    register_ws(ws)
+    try:
+        while True:
+            # keep the connection alive by waiting for client messages (or pings)
+            await ws.receive_text()
+    except WebSocketDisconnect:
+        unregister_ws(ws)
+    except Exception:
+        unregister_ws(ws)
+        try:
+            await ws.close()
+        except Exception:
+            pass

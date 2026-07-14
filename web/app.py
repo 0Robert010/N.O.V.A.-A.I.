@@ -42,16 +42,7 @@ async def ask_question(payload: dict) -> JSONResponse:
     if not question:
         return JSONResponse({"answer": "Por favor, formule uma pergunta."}, status_code=400)
 
-    results = manager.search_concepts(question)
-    if results:
-        concept = results[0]
-        answer = (
-            f"Conceito encontrado: {concept['name']}. "
-            f"Categoria: {concept['category']}. "
-            f"Descrição: {concept['description']}"
-        )
-    else:
-        answer = "Ainda não tenho esse conhecimento na memória. Pode me ensinar?"
+    answer = manager.build_contextual_answer(question)
     return JSONResponse({"answer": answer})
 
 

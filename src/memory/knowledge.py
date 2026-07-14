@@ -98,3 +98,42 @@ class KnowledgeManager:
             """
         ).fetchall()
         return [dict(row) for row in rows]
+
+    def build_contextual_answer(self, question: str) -> str:
+        """Constrói uma resposta simples e contextual com base na memória da NOVA."""
+        normalized_question = question.strip().lower()
+        concept = self.get_concept_by_name(question.strip())
+        if concept is None:
+            keywords = [token for token in normalized_question.replace("?", "").split() if token.isalpha()]
+            candidate_terms = []
+            for keyword in keywords:
+                candidate_terms.append(keyword)
+                if len(keyword) > 3:
+                    candidate_terms.append(keyword.capitalize())
+            for candidate in candidate_terms:
+                concept = self.get_concept_by_name(candidate)
+                if concept is not None:
+                    break
+            if concept is None:
+                keyword = question.strip().split()[-1]
+                results = self.search_concepts(keyword)
+                if not results:
+                    return "Ainda não tenho esse conhecimento na memória. Posso aprender isso para você."
+                concept = results[0]
+
+        related = [
+            relationship["target_name"]
+            for relationship in self.list_relationships()
+            if relationship["source_name"] == concept["name"]
+        ]
+        if related:
+            related_text = ", ".join(related)
+            return (
+                f"{concept['name']} é um conceito de {concept['category']} associado a {related_text}. "
+                f"Minha memória registra que: {concept['description']}"
+            )
+
+        return (
+            f"{concept['name']} pertence à categoria {concept['category']}. "
+            f"Resumo da memória: {concept['description']}"
+        )

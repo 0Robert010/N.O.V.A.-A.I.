@@ -5,12 +5,12 @@ Uma inteligência artificial experimental focada em aprendizado, memória artifi
 NOVA v0.1 — Artificial Memory System
 
 ## Objetivo desta versão
-Criar o primeiro sistema de memória artificial da NOVA, com armazenamento local em SQLite, relações entre conceitos e uma interface web visual para ensinar, consultar e organizar conhecimento.
+Criar uma NOVA com memória artificial persistente, respostas baseadas em contexto e uma interface web visual para ensinar, consultar e organizar conhecimento de forma mais humana.
 
 ## Arquitetura atual
 - Banco de conhecimento em SQLite para persistência local.
 - Módulo de conexão e inicialização em src/memory/database.py.
-- Módulo de gestão de conceitos e relações em src/memory/knowledge.py.
+- Módulo de gestão de conceitos, relações e respostas contextuais em src/memory/knowledge.py.
 - Backend web com FastAPI em web/app.py.
 - Interface visual em HTML, CSS e JavaScript puro em web/templates e web/static.
 
@@ -57,4 +57,4 @@ python3 -m unittest discover -s tests -v
 - Confiança: 0.9
 
 ## Próximo passo
-A próxima evolução da NOVA pode incluir inferência automática de relações entre conceitos, maior peso semântico nas ligações e uma camada de memória contextual.
+A próxima evolução da NOVA pode incluir inferência automática de relações, memória episódica e respostas ainda mais naturais, mantendo tudo local e sem dependência de APIs externas.

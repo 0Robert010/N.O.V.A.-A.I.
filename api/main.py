@@ -5,9 +5,9 @@ from pathlib import Path
 from fastapi import FastAPI, Request, WebSocket, WebSocketDisconnect
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
-from src.events.broadcast import register as register_ws, unregister as unregister_ws
 
 from api.services.learner import LearnerService
+from src.events.broadcast import register as register_ws, unregister as unregister_ws
 from src.memory.database import initialize_database
 from src.memory.knowledge import KnowledgeManager
 

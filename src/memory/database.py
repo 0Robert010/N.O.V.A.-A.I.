@@ -33,5 +33,18 @@ def initialize_database(db_path: Optional[Path | str] = None, connection: Option
         )
         """
     )
+    active_connection.execute(
+        """
+        CREATE TABLE IF NOT EXISTS relationships (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            source_id INTEGER NOT NULL,
+            target_id INTEGER NOT NULL,
+            relation_type TEXT NOT NULL,
+            created_at TEXT NOT NULL,
+            FOREIGN KEY(source_id) REFERENCES knowledge(id),
+            FOREIGN KEY(target_id) REFERENCES knowledge(id)
+        )
+        """
+    )
     active_connection.commit()
     return active_connection

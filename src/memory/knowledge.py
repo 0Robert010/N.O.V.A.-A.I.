@@ -65,3 +65,36 @@ class KnowledgeManager:
             "SELECT * FROM knowledge ORDER BY created_at DESC"
         ).fetchall()
         return [dict(row) for row in rows]
+
+    def add_relationship(self, *, source_name: str, target_name: str, relation_type: str) -> int:
+        """Cria um vínculo entre dois conceitos conhecidos."""
+        source = self.get_concept_by_name(source_name)
+        target = self.get_concept_by_name(target_name)
+        if source is None or target is None:
+            raise ValueError("Os dois conceitos precisam existir antes de criar uma relação.")
+        if not relation_type.strip():
+            raise ValueError("O tipo de relação não pode ficar vazio.")
+
+        created_at = datetime.now(timezone.utc).isoformat(timespec="seconds")
+        cursor = self.connection.execute(
+            """
+            INSERT INTO relationships (source_id, target_id, relation_type, created_at)
+            VALUES (?, ?, ?, ?)
+            """,
+            (source["id"], target["id"], relation_type.strip(), created_at),
+        )
+        self.connection.commit()
+        return int(cursor.lastrowid)
+
+    def list_relationships(self) -> List[Dict[str, Any]]:
+        """Lista as relações atualmente registradas na memória."""
+        rows = self.connection.execute(
+            """
+            SELECT r.id, r.relation_type, r.created_at, k1.name AS source_name, k2.name AS target_name
+            FROM relationships AS r
+            JOIN knowledge AS k1 ON k1.id = r.source_id
+            JOIN knowledge AS k2 ON k2.id = r.target_id
+            ORDER BY r.created_at DESC
+            """
+        ).fetchall()
+        return [dict(row) for row in rows]

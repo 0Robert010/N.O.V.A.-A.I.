@@ -45,6 +45,33 @@ class MemorySystemTests(unittest.TestCase):
         all_concepts = self.manager.list_concepts()
         self.assertEqual(len(all_concepts), 1)
 
+    def test_knowledge_manager_can_link_concepts(self) -> None:
+        self.manager.add_concept(
+            name="Python",
+            category="Programação",
+            description="Linguagem de programação de alto nível.",
+            source="Manual Python",
+            confidence=0.9,
+        )
+        self.manager.add_concept(
+            name="SQLite",
+            category="Banco de dados",
+            description="Motor de banco de dados leve.",
+            source="Documentação SQLite",
+            confidence=0.85,
+        )
+
+        relationship_id = self.manager.add_relationship(
+            source_name="Python",
+            target_name="SQLite",
+            relation_type="usa",
+        )
+
+        self.assertIsNotNone(relationship_id)
+        relationships = self.manager.list_relationships()
+        self.assertEqual(len(relationships), 1)
+        self.assertEqual(relationships[0]["relation_type"], "usa")
+
 
 if __name__ == "__main__":
     unittest.main()

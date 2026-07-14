@@ -32,6 +32,43 @@ class LearnerService:
             confidence=confidence,
         )
 
+    def learn_from_url(self, url: str) -> int:
+        """Busca uma página web e tenta extrair um conceito simples para aprender.
+
+        Usa uma heurística leve (título + primeiro parágrafo) para criar um conceito.
+        """
+        try:
+            import requests
+            from bs4 import BeautifulSoup
+        except Exception as error:  # pragma: no cover - runtime dependency check
+            raise RuntimeError("Dependências para scraping não estão instaladas: requests, beautifulsoup4") from error
+
+        resp = requests.get(url, timeout=8, headers={"User-Agent": "NOVA/0.2 (+https://example)"})
+        resp.raise_for_status()
+        soup = BeautifulSoup(resp.text, "html.parser")
+
+        title = (soup.title.string.strip() if soup.title and soup.title.string else None) or Path(url).stem.capitalize()
+        p = soup.find("p")
+        description = (p.get_text().strip() if p else "").strip() or (soup.get_text(separator=" ", strip=True)[:200])
+
+        lower = (title + " " + description).lower()
+        if any(term in lower for term in ["program", "python", "code", "javascript", "java", "syntax"]):
+            category = "Programação"
+        elif any(term in lower for term in ["database", "sql", "sqlite", "postgres", "mysql"]):
+            category = "Banco de dados"
+        else:
+            category = "Geral"
+
+        confidence = 0.7
+
+        return self.learn_concept(
+            name=title,
+            category=category,
+            description=description,
+            source=url,
+            confidence=confidence,
+        )
+
     def get_stats(self) -> Dict[str, Any]:
         concepts = self.manager.list_concepts()
         categories = sorted({concept["category"] for concept in concepts})

@@ -6,6 +6,8 @@ const metricTime = document.getElementById('metric-time');
 const activityLog = document.getElementById('activity-log');
 const canvas = document.getElementById('stats-chart');
 const runLearningButton = document.getElementById('run-learning');
+const learnUrlButton = document.getElementById('learn-url');
+const urlInput = document.getElementById('url-input');
 
 async function loadStats() {
   const response = await fetch('/stats');
@@ -80,4 +82,40 @@ async function runLearningCycle() {
 }
 
 runLearningButton?.addEventListener('click', runLearningCycle);
+
+async function learnFromUrl() {
+  if (!learnUrlButton || !urlInput) return;
+  const url = urlInput.value.trim();
+  if (!url) return;
+  learnUrlButton.disabled = true;
+  learnUrlButton.textContent = 'Aprendendo...';
+
+  try {
+    const response = await fetch('/learn/url', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ url }),
+    });
+    const data = await response.json();
+    if (activityLog) {
+      const line = document.createElement('div');
+      line.className = 'line';
+      line.textContent = `[${new Date().toLocaleTimeString()}] Aprendido da web: ${url}`;
+      activityLog.appendChild(line);
+    }
+    await loadStats();
+  } catch (err) {
+    if (activityLog) {
+      const line = document.createElement('div');
+      line.className = 'line';
+      line.textContent = `[${new Date().toLocaleTimeString()}] Erro ao aprender da web: ${err}`;
+      activityLog.appendChild(line);
+    }
+  } finally {
+    learnUrlButton.disabled = false;
+    learnUrlButton.textContent = 'Aprender da Web';
+  }
+}
+
+learnUrlButton?.addEventListener('click', learnFromUrl);
 loadStats();

@@ -28,3 +28,15 @@ async def learn_concept(payload: dict, service: LearnerService = Depends(get_lea
     except ValueError as error:
         raise HTTPException(status_code=400, detail=str(error)) from error
     return {"success": True, "concept_id": concept_id}
+
+
+@router.post("/learn/url")
+async def learn_from_url(payload: dict, service: LearnerService = Depends(get_learner_service)) -> dict:
+    url = str(payload.get("url", "")).strip()
+    if not url:
+        raise HTTPException(status_code=400, detail="URL é obrigatória")
+    try:
+        concept_id = service.learn_from_url(url)
+    except Exception as error:
+        raise HTTPException(status_code=400, detail=str(error)) from error
+    return {"success": True, "concept_id": concept_id}

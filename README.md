@@ -61,6 +61,16 @@ ou via API:
 curl -X POST http://127.0.0.1:8000/learning/run
 ```
 
+### Aprender a partir da web (URL)
+Você também pode fornecer uma URL para que a NOVA busque a página e tente extrair um conceito automaticamente.
+
+Exemplo via API:
+```bash
+curl -X POST http://127.0.0.1:8000/learn/url -H "Content-Type: application/json" -d '{"url":"https://example.com/article"}'
+```
+
+Ou use o campo "Aprender da Web" na interface web e cole uma URL.
+
 ## Endpoints da API
 - GET /knowledge — lista os conhecimentos salvos
 - GET /stats — retorna quantidade de conhecimentos, categorias, última atividade e tempo de execução

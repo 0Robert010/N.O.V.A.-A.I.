@@ -124,6 +124,22 @@ h1 { font-size: 2.4rem; margin: 4px 0; }
   font-weight: 700;
   cursor: pointer;
 }
+
+.learn-controls {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+  align-items: center;
+}
+
+.learn-controls input {
+  flex: 1;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.03);
+  color: var(--text);
+}
 .activity-indicator span {
   width: 10px;
   height: 10px;

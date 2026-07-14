@@ -12,6 +12,14 @@ function appendBubble(text, role = 'nova') {
   chatLog.scrollTop = chatLog.scrollHeight;
 }
 
+function setLoadingState(isLoading) {
+  const button = askForm?.querySelector('button');
+  if (button) {
+    button.disabled = isLoading;
+    button.textContent = isLoading ? 'Pensando…' : 'Enviar';
+  }
+}
+
 async function refreshMemory() {
   const response = await fetch('/memory');
   const concepts = await response.json();
@@ -40,15 +48,22 @@ askForm?.addEventListener('submit', async (event) => {
 
   appendBubble(question, 'user');
   input.value = '';
+  setLoadingState(true);
 
-  const response = await fetch('/ask', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ question }),
-  });
+  try {
+    const response = await fetch('/ask', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ question }),
+    });
 
-  const data = await response.json();
-  appendBubble(data.answer || 'Sem resposta.', 'nova');
+    const data = await response.json();
+    appendBubble(data.answer || 'Sem resposta.', 'nova');
+  } catch (error) {
+    appendBubble('Não consegui responder neste momento.', 'nova');
+  } finally {
+    setLoadingState(false);
+  }
 });
 
 learnForm?.addEventListener('submit', async (event) => {

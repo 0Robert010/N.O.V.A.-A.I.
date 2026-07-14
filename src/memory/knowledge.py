@@ -100,7 +100,7 @@ class KnowledgeManager:
         return [dict(row) for row in rows]
 
     def build_contextual_answer(self, question: str) -> str:
-        """Constrói uma resposta simples e contextual com base na memória da NOVA."""
+        """Constrói uma resposta mais natural e contextual com base na memória da NOVA."""
         normalized_question = question.strip().lower()
         concept = self.get_concept_by_name(question.strip())
         if concept is None:
@@ -118,7 +118,7 @@ class KnowledgeManager:
                 keyword = question.strip().split()[-1]
                 results = self.search_concepts(keyword)
                 if not results:
-                    return "Ainda não tenho esse conhecimento na memória. Posso aprender isso para você."
+                    return "Ainda não tenho esse conhecimento na memória. Posso aprender isso para você, se quiser."
                 concept = results[0]
 
         related = [
@@ -126,14 +126,15 @@ class KnowledgeManager:
             for relationship in self.list_relationships()
             if relationship["source_name"] == concept["name"]
         ]
+
         if related:
             related_text = ", ".join(related)
             return (
-                f"{concept['name']} é um conceito de {concept['category']} associado a {related_text}. "
-                f"Minha memória registra que: {concept['description']}"
+                f"Eu lembro que {concept['name']} é um conceito de {concept['category']} e está ligado a {related_text}. "
+                f"Minha memória registra: {concept['description']}"
             )
 
         return (
-            f"{concept['name']} pertence à categoria {concept['category']}. "
+            f"Eu lembro que {concept['name']} pertence à categoria {concept['category']}. "
             f"Resumo da memória: {concept['description']}"
         )

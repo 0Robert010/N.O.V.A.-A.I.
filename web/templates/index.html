@@ -7,24 +7,30 @@
     <link rel="stylesheet" href="/static/style.css" />
   </head>
   <body>
+    <div class="background-grid"></div>
     <div class="app-shell">
       <header class="hero">
-        <div>
+        <div class="hero-copy">
           <p class="eyebrow">Sistema de memória artificial</p>
           <h1>NOVA AI</h1>
-          <p class="version">v0.1</p>
+          <p class="version">v0.1 · Laboratório cognitivo</p>
+          <p class="hero-text">Uma assistente experimental que aprende, organiza e lembra conhecimento de forma estrutural.</p>
         </div>
         <div class="stats-card">
           <p>Conhecimentos armazenados</p>
           <strong id="knowledge-count">{{ knowledge_count }}</strong>
+          <span>Memória local · SQLite</span>
         </div>
       </header>
 
       <main class="dashboard">
         <section class="panel conversation-panel">
-          <h2>Interface de conversa</h2>
+          <div class="panel-header">
+            <h2>Interface de conversa</h2>
+            <span class="status-pill">Online</span>
+          </div>
           <div id="chat-log" class="chat-log">
-            <div class="bubble nova">Olá, sou a NOVA. Pergunte sobre o que eu já aprendi.</div>
+            <div class="bubble nova">Saudações. Eu sou a NOVA. Pergunte o que desejar e eu responderei com base na minha memória.</div>
           </div>
           <form id="ask-form" class="input-row">
             <input id="question-input" type="text" placeholder="O que é Python?" />
@@ -33,7 +39,10 @@
         </section>
 
         <section class="panel form-panel">
-          <h2>Ensinar novo conhecimento</h2>
+          <div class="panel-header">
+            <h2>Ensinar novo conhecimento</h2>
+            <span class="status-pill alt">Aprendizado</span>
+          </div>
           <form id="learn-form" class="learn-form">
             <input name="name" placeholder="Nome do conceito" required />
             <input name="category" placeholder="Categoria" required />

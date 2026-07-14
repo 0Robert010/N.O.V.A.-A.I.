@@ -33,6 +33,19 @@ class ReasoningTests(unittest.TestCase):
         self.assertIn('Python', answer)
         self.assertIn('Programação', answer)
 
+    def test_reasoning_answers_with_a_more_assistant_style(self) -> None:
+        self.manager.add_concept(
+            name='Python',
+            category='Programação',
+            description='Linguagem de programação de alto nível.',
+            source='Manual Python',
+            confidence=0.95,
+        )
+
+        answer = self.manager.build_contextual_answer('O que é Python?')
+        self.assertIn('Eu lembro', answer)
+        self.assertIn('Programação', answer)
+
 
 if __name__ == '__main__':
     unittest.main()

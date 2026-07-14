@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NOVA AI v0.2</title>
+    <link rel="stylesheet" href="/static/style.css" />
+  </head>
+  <body>
+    <div class="background-glow"></div>
+    <main class="dashboard-shell">
+      <section class="hero-card">
+        <div>
+          <p class="eyebrow">Autonomous Learning Simulation</p>
+          <h1>NOVA AI v0.2</h1>
+          <p class="subtitle">Sistema local de aprendizagem autônoma sem IA generativa.</p>
+        </div>
+        <div class="status-card">
+          <span class="dot"></span>
+          <strong>ONLINE</strong>
+          <p>Memória: <span id="memory-count">0</span> conhecimentos</p>
+        </div>
+      </section>
+
+      <section class="metrics-grid">
+        <article class="metric-card">
+          <h3>Conhecimentos adquiridos</h3>
+          <p id="metric-knowledge">0</p>
+        </article>
+        <article class="metric-card">
+          <h3>Categorias</h3>
+          <p id="metric-categories">0</p>
+        </article>
+        <article class="metric-card">
+          <h3>Última atividade</h3>
+          <p id="metric-last">-</p>
+        </article>
+        <article class="metric-card">
+          <h3>Tempo aprendendo</h3>
+          <p id="metric-time">0s</p>
+        </article>
+      </section>
+
+      <section class="content-grid">
+        <article class="panel">
+          <div class="panel-header">
+            <h2>Diário de Aprendizado</h2>
+            <span class="processing-pill">Processando</span>
+          </div>
+          <div class="terminal" id="activity-log">
+            <div class="line">NOVA está aprendendo...</div>
+            <div class="line">[00:01] Analisando arquivo python.txt</div>
+            <div class="line">[00:02] Novo conceito encontrado: Python</div>
+          </div>
+          <button id="run-learning" class="run-button">Executar ciclo de aprendizado</button>
+          <div class="activity-indicator">
+            <span></span><span></span><span></span>
+          </div>
+        </article>
+
+        <article class="panel">
+          <h2>Gráficos simples</h2>
+          <canvas id="stats-chart" width="320" height="180"></canvas>
+        </article>
+      </section>
+    </main>
+
+    <script src="/static/script.js"></script>
+  </body>
+</html>

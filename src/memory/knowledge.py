@@ -26,7 +26,10 @@ class KnowledgeManager:
         if not 0.0 <= confidence <= 1.0:
             raise ValueError("O nível de confiança deve estar entre 0.0 e 1.0.")
 
-        # O timestamp de criação é salvo para manter uma ordem temporal simples dos conceitos.
+        existing = self.get_concept_by_name(name)
+        if existing is not None:
+            return int(existing["id"])
+
         created_at = datetime.now(timezone.utc).isoformat(timespec="seconds")
         cursor = self.connection.execute(
             """

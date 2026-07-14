@@ -4,17 +4,25 @@ A arquitetura atual da NOVA separa responsabilidades para manter o sistema simpl
 
 - Camada de persistência: responsável pelo banco SQLite e pela criação das tabelas.
 - Camada de conhecimento: responsável por inserir, buscar, listar conceitos e registrar relações entre eles.
-- Camada de interface: responsável por capturar comandos do usuário e apresentar os resultados em um menu visual de terminal.
+- Camada backend: expõe uma API simples com FastAPI para consulta e aprendizado.
+- Camada frontend: apresenta uma interface web visual em HTML, CSS e JavaScript puro.
 
 ## Estruturas principais
 - Tabela knowledge: armazena conceitos com nome, categoria, descrição, fonte, confiança e data de criação.
 - Tabela relationships: armazena relações entre conceitos, como "usa", "pertence" ou "depende".
 
 ## Fluxo principal
-1. O programa inicia a conexão com o banco SQLite.
+1. O backend inicia a conexão com o banco SQLite.
 2. O banco é inicializado com as tabelas knowledge e relationships.
-3. O usuário pode ensinar novos conceitos, consultar conceitos existentes, listar a memória, visualizar relações e criar novas relações.
-4. Os dados ficam persistidos localmente em um arquivo SQLite.
+3. A interface web envia perguntas e novos conceitos para o backend.
+4. O backend consulta a memória SQLite e devolve respostas, confirmações e a lista atual de conceitos para a interface.
+5. Os dados ficam persistidos localmente em um arquivo SQLite.
+
+## Estrutura de pastas
+- web/app.py: servidor FastAPI.
+- web/templates/index.html: página principal da interface.
+- web/static/style.css: estilo futurista da aplicação.
+- web/static/script.js: interação do frontend com o backend.
 
 ## Próxima evolução planejada
 - Inferência automática de relações.

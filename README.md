@@ -5,15 +5,32 @@ Uma inteligência artificial experimental focada em aprendizado, memória artifi
 NOVA v0.1 — Artificial Memory System
 
 ## Objetivo desta versão
-Criar o primeiro sistema de memória artificial da NOVA, com armazenamento local em SQLite, relações entre conceitos e uma interface visual em terminal para ensinar, consultar e organizar conhecimento.
+Criar o primeiro sistema de memória artificial da NOVA, com armazenamento local em SQLite, relações entre conceitos e uma interface web visual para ensinar, consultar e organizar conhecimento.
 
 ## Arquitetura atual
 - Banco de conhecimento em SQLite para persistência local.
 - Módulo de conexão e inicialização em src/memory/database.py.
 - Módulo de gestão de conceitos e relações em src/memory/knowledge.py.
-- Interface visual em terminal em src/main.py.
+- Backend web com FastAPI em web/app.py.
+- Interface visual em HTML, CSS e JavaScript puro em web/templates e web/static.
 
-## Como executar
+## Como executar a interface web
+Instale as dependências:
+```bash
+python3 -m pip install --break-system-packages -r requirements.txt
+```
+
+Depois inicie o servidor:
+```bash
+python3 -m uvicorn web.app:app --reload --host 0.0.0.0 --port 8000
+```
+
+Depois abra o navegador em:
+```text
+http://127.0.0.1:8000/
+```
+
+## Como executar o terminal antigo
 ```bash
 python3 src/main.py
 ```

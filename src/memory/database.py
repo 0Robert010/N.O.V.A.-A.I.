@@ -12,7 +12,7 @@ def connect_database(db_path: Optional[Path | str] = None) -> sqlite3.Connection
     """Cria ou abre uma conexão com o banco SQLite da NOVA."""
     resolved_path = Path(db_path or DEFAULT_DB_PATH)
     resolved_path.parent.mkdir(parents=True, exist_ok=True)
-    connection = sqlite3.connect(resolved_path)
+    connection = sqlite3.connect(resolved_path, check_same_thread=False)
     connection.row_factory = sqlite3.Row
     return connection
 

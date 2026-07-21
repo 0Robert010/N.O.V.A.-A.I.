@@ -72,6 +72,16 @@ class MemorySystemTests(unittest.TestCase):
         self.assertEqual(len(relationships), 1)
         self.assertEqual(relationships[0]["relation_type"], "usa")
 
+    def test_initialize_database_accepts_path_objects(self) -> None:
+        from src.memory.db import SQLALCHEMY_AVAILABLE
+
+        if not SQLALCHEMY_AVAILABLE:
+            self.skipTest("SQLAlchemy não está disponível neste ambiente")
+
+        engine = initialize_database(Path(self.temp_dir.name) / "path_based.db")
+        self.assertIsNotNone(engine)
+        engine.dispose()
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -1,5 +1,6 @@
 fastapi
 uvicorn
+websockets>=12,<14
 jinja2
 python-multipart
 httpx

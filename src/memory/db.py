@@ -50,16 +50,18 @@ try:
     )
 
 
-    def get_database_url(explicit: Optional[str] = None) -> str:
+    def get_database_url(explicit: Optional[str | Path] = None) -> str:
         env = os.getenv("DATABASE_URL")
-        if explicit:
-            return explicit
+        if explicit is not None:
+            if isinstance(explicit, Path):
+                return f"sqlite:///{explicit.resolve()}"
+            return str(explicit)
         if env:
             return env
         return f"sqlite:///{DEFAULT_DB_PATH}"
 
 
-    def get_engine(database_url: Optional[str] = None) -> Engine:
+    def get_engine(database_url: Optional[str | Path] = None) -> Engine:
         url = get_database_url(database_url)
         connect_args = {}
         if url.startswith("sqlite"):
@@ -68,7 +70,7 @@ try:
         return engine
 
 
-    def initialize_database(database_url: Optional[str] = None) -> Engine:
+    def initialize_database(database_url: Optional[str | Path] = None) -> Engine:
         engine = get_engine(database_url)
         metadata.create_all(engine)
         return engine
